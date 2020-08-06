@@ -7,7 +7,7 @@ import Icon from "../Icon";
 class NestableItem extends Component {
   static propTypes = {
     item: PropTypes.shape({
-      id: PropTypes.any.isRequired,
+      _id: PropTypes.any.isRequired,
     }),
     isCopy: PropTypes.bool,
     options: PropTypes.object,
@@ -34,7 +34,7 @@ class NestableItem extends Component {
     } = options;
 
     const isCollapsed = options.isCollapsed(item);
-    const isDragging = !isCopy && dragItem && dragItem.id === item.id;
+    const isDragging = !isCopy && dragItem && dragItem._id === item._id;
     const hasChildren =
       get(item, childrenProp) && get(item, childrenProp).length > 0;
 
@@ -79,7 +79,7 @@ class NestableItem extends Component {
 
     const baseClassName = "nestable-item" + (isCopy ? "-copy" : "");
     const itemProps = {
-      className: cn(baseClassName, baseClassName + "-" + item.id, {
+      className: cn(baseClassName, baseClassName + "-" + item._id, {
         "is-dragging": isDragging,
         [baseClassName + "--with-children"]: hasChildren,
         [baseClassName + "--children-open"]: hasChildren && !isCollapsed,

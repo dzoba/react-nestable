@@ -90,7 +90,7 @@ export const getAllNonEmptyNodesIds = (items, childrenProp) => {
       childrenIds = childrenIds.concat(
         getAllNonEmptyNodesIds(get(item, childrenProp), childrenProp)
       );
-      return item.id;
+      return item._id;
     });
 
   return ids.concat(childrenIds);
