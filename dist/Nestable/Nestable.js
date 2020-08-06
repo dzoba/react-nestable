@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -8,31 +8,35 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
+var _propTypes = require("prop-types");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactAddonsShallowCompare = require('react-addons-shallow-compare');
+var _reactAddonsShallowCompare = require("react-addons-shallow-compare");
 
 var _reactAddonsShallowCompare2 = _interopRequireDefault(_reactAddonsShallowCompare);
 
-var _reactAddonsUpdate = require('react-addons-update');
+var _reactAddonsUpdate = require("react-addons-update");
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
-var _classnames = require('classnames');
+var _classnames = require("classnames");
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _utils = require('../utils');
+var _get = require("lodash/get");
 
-require('./Nestable.css');
+var _get2 = _interopRequireDefault(_get);
 
-var _NestableItem = require('./NestableItem');
+var _utils = require("../utils");
+
+require("./Nestable.css");
+
+var _NestableItem = require("./NestableItem");
 
 var _NestableItem2 = _interopRequireDefault(_NestableItem);
 
@@ -63,11 +67,11 @@ var Nestable = function (_Component) {
       var items = _this.state.items;
 
 
-      if (itemIds === 'NONE') {
+      if (itemIds === "NONE") {
         _this.setState({
           collapsedGroups: collapsed ? (0, _utils.getAllNonEmptyNodesIds)(items, childrenProp) : []
         });
-      } else if (itemIds === 'ALL') {
+      } else if (itemIds === "ALL") {
         _this.setState({
           collapsedGroups: collapsed ? [] : (0, _utils.getAllNonEmptyNodesIds)(items, childrenProp)
         });
@@ -81,15 +85,15 @@ var Nestable = function (_Component) {
     };
 
     _this.startTrackMouse = function () {
-      document.addEventListener('mousemove', _this.onMouseMove);
-      document.addEventListener('mouseup', _this.onDragEnd);
-      document.addEventListener('keydown', _this.onKeyDown);
+      document.addEventListener("mousemove", _this.onMouseMove);
+      document.addEventListener("mouseup", _this.onDragEnd);
+      document.addEventListener("keydown", _this.onKeyDown);
     };
 
     _this.stopTrackMouse = function () {
-      document.removeEventListener('mousemove', _this.onMouseMove);
-      document.removeEventListener('mouseup', _this.onDragEnd);
-      document.removeEventListener('keydown', _this.onKeyDown);
+      document.removeEventListener("mousemove", _this.onMouseMove);
+      document.removeEventListener("mouseup", _this.onDragEnd);
+      document.removeEventListener("keydown", _this.onKeyDown);
       _this.elCopyStyles = null;
     };
 
@@ -98,8 +102,8 @@ var Nestable = function (_Component) {
 
       var level = 1;
 
-      if (item[childrenProp].length > 0) {
-        var childrenDepths = item[childrenProp].map(_this.getItemDepth);
+      if ((0, _get2.default)(item, childrenProp).length > 0) {
+        var childrenDepths = (0, _get2.default)(item, childrenProp).map(_this.getItemDepth);
         level += Math.max.apply(Math, _toConsumableArray(childrenDepths));
       }
 
@@ -120,7 +124,7 @@ var Nestable = function (_Component) {
         e.stopPropagation();
       }
 
-      _this.el = (0, _utils.closest)(e.target, '.nestable-item');
+      _this.el = (0, _utils.closest)(e.target, ".nestable-item");
 
       _this.startTrackMouse();
       _this.onMouseMove(e);
@@ -149,7 +153,7 @@ var Nestable = function (_Component) {
           clientY = e.clientY;
 
       var transformProps = (0, _utils.getTransformProps)(clientX, clientY);
-      var elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
+      var elCopy = document.querySelector(".nestable-" + group + " .nestable-drag-layer > .nestable-list");
 
       if (!_this.elCopyStyles) {
         var offset = (0, _utils.getOffsetRect)(_this.el);
@@ -209,7 +213,7 @@ var Nestable = function (_Component) {
       var collapseProps = {};
       if (collapsed && pathFrom.length > 1) {
         var parent = _this.getItemByPath(pathFrom.slice(0, -1));
-        if (parent[childrenProp].length === 1) {
+        if ((0, _get2.default)(parent, childrenProp).length === 1) {
           collapseProps = _this.onToggleCollapse(parent, true);
         }
       }
@@ -261,7 +265,7 @@ var Nestable = function (_Component) {
   }
 
   _createClass(Nestable, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       var _props = this.props,
           items = _props.items,
@@ -274,7 +278,7 @@ var Nestable = function (_Component) {
       this.setState({ items: items });
     }
   }, {
-    key: 'componentDidUpdate',
+    key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps) {
       var _props2 = this.props,
           itemsNew = _props2.items,
@@ -299,7 +303,7 @@ var Nestable = function (_Component) {
       }
     }
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.stopTrackMouse();
     }
@@ -314,7 +318,7 @@ var Nestable = function (_Component) {
     // ––––––––––––––––––––––––––––––––––––
 
   }, {
-    key: 'moveItem',
+    key: "moveItem",
     value: function moveItem(_ref) {
       var dragItem = _ref.dragItem,
           pathFrom = _ref.pathFrom,
@@ -359,7 +363,7 @@ var Nestable = function (_Component) {
       }, extraProps));
     }
   }, {
-    key: 'tryIncreaseDepth',
+    key: "tryIncreaseDepth",
     value: function tryIncreaseDepth(dragItem) {
       var _props4 = this.props,
           maxDepth = _props4.maxDepth,
@@ -375,14 +379,14 @@ var Nestable = function (_Component) {
         var prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
 
         // previous sibling is not collapsed
-        if (!prevSibling[childrenProp].length || !this.isCollapsed(prevSibling)) {
-          var pathTo = pathFrom.slice(0, -1).concat(itemIndex - 1).concat(prevSibling[childrenProp].length);
+        if (!(0, _get2.default)(prevSibling, childrenProp).length || !this.isCollapsed(prevSibling)) {
+          var pathTo = pathFrom.slice(0, -1).concat(itemIndex - 1).concat((0, _get2.default)(prevSibling, childrenProp).length);
 
           // if collapsed by default
           // and was no children here
           // open this node
           var collapseProps = {};
-          if (collapsed && !prevSibling[childrenProp].length) {
+          if (collapsed && !(0, _get2.default)(prevSibling, childrenProp).length) {
             collapseProps = this.onToggleCollapse(prevSibling, true);
           }
 
@@ -391,7 +395,7 @@ var Nestable = function (_Component) {
       }
     }
   }, {
-    key: 'tryDecreaseDepth',
+    key: "tryDecreaseDepth",
     value: function tryDecreaseDepth(dragItem) {
       var _props5 = this.props,
           childrenProp = _props5.childrenProp,
@@ -405,7 +409,7 @@ var Nestable = function (_Component) {
         var parent = this.getItemByPath(pathFrom.slice(0, -1));
 
         // is last (by order) item in array
-        if (itemIndex + 1 === parent[childrenProp].length) {
+        if (itemIndex + 1 === (0, _get2.default)(parent, childrenProp).length) {
           var pathTo = pathFrom.slice(0, -1);
           pathTo[pathTo.length - 1] += 1;
 
@@ -413,7 +417,7 @@ var Nestable = function (_Component) {
           // and is last (by count) item in array
           // remove this node from list of open nodes
           var collapseProps = {};
-          if (collapsed && parent[childrenProp].length === 1) {
+          if (collapsed && (0, _get2.default)(parent, childrenProp).length === 1) {
             collapseProps = this.onToggleCollapse(parent, true);
           }
 
@@ -422,7 +426,7 @@ var Nestable = function (_Component) {
       }
     }
   }, {
-    key: 'dragApply',
+    key: "dragApply",
     value: function dragApply() {
       var onChange = this.props.onChange;
       var _state = this.state,
@@ -440,7 +444,7 @@ var Nestable = function (_Component) {
       onChange && isDirty && onChange(items, dragItem);
     }
   }, {
-    key: 'dragRevert',
+    key: "dragRevert",
     value: function dragRevert() {
       var itemsOld = this.state.itemsOld;
 
@@ -458,7 +462,7 @@ var Nestable = function (_Component) {
     // ––––––––––––––––––––––––––––––––––––
 
   }, {
-    key: 'getPathById',
+    key: "getPathById",
     value: function getPathById(id) {
       var _this2 = this;
 
@@ -470,8 +474,8 @@ var Nestable = function (_Component) {
       items.every(function (item, i) {
         if (item.id === id) {
           path.push(i);
-        } else if (item[childrenProp]) {
-          var childrenPath = _this2.getPathById(id, item[childrenProp]);
+        } else if ((0, _get2.default)(item, childrenProp)) {
+          var childrenPath = _this2.getPathById(id, (0, _get2.default)(item, childrenProp));
 
           if (childrenPath.length) {
             path = path.concat(i).concat(childrenPath);
@@ -484,7 +488,7 @@ var Nestable = function (_Component) {
       return path;
     }
   }, {
-    key: 'getItemByPath',
+    key: "getItemByPath",
     value: function getItemByPath(path) {
       var items = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.items;
       var childrenProp = this.props.childrenProp;
@@ -492,14 +496,14 @@ var Nestable = function (_Component) {
       var item = null;
 
       path.forEach(function (index) {
-        var list = item ? item[childrenProp] : items;
+        var list = item ? (0, _get2.default)(item, childrenProp) : items;
         item = list[index];
       });
 
       return item;
     }
   }, {
-    key: 'getSplicePath',
+    key: "getSplicePath",
     value: function getSplicePath(path) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -522,7 +526,7 @@ var Nestable = function (_Component) {
       return splicePath;
     }
   }, {
-    key: 'getRealNextPath',
+    key: "getRealNextPath",
     value: function getRealNextPath(prevPath, nextPath, dragItemSize) {
       var _props6 = this.props,
           childrenProp = _props6.childrenProp,
@@ -546,7 +550,7 @@ var Nestable = function (_Component) {
             return i === npLastIndex ? nextIndex + 1 : nextIndex;
           }
 
-          if (typeof prevPath[i] !== 'number') {
+          if (typeof prevPath[i] !== "number") {
             return nextIndex;
           }
 
@@ -562,7 +566,7 @@ var Nestable = function (_Component) {
         if (nextPath[npLastIndex] > prevPath[npLastIndex]) {
           var target = this.getItemByPath(nextPath);
 
-          if (newDepth < maxDepth && target[childrenProp] && target[childrenProp].length && !this.isCollapsed(target)) {
+          if (newDepth < maxDepth && (0, _get2.default)(target, childrenProp) && (0, _get2.default)(target, childrenProp).length && !this.isCollapsed(target)) {
             return nextPath.slice(0, -1).concat(nextPath[npLastIndex] - 1).concat(0);
           }
         }
@@ -571,7 +575,7 @@ var Nestable = function (_Component) {
       return nextPath;
     }
   }, {
-    key: 'getItemOptions',
+    key: "getItemOptions",
     value: function getItemOptions() {
       var _props7 = this.props,
           renderItem = _props7.renderItem,
@@ -600,7 +604,7 @@ var Nestable = function (_Component) {
     // ––––––––––––––––––––––––––––––––––––
 
   }, {
-    key: 'renderDragLayer',
+    key: "renderDragLayer",
 
 
     // ––––––––––––––––––––––––––––––––––––
@@ -610,7 +614,7 @@ var Nestable = function (_Component) {
       var group = this.props.group;
       var dragItem = this.state.dragItem;
 
-      var el = document.querySelector('.nestable-' + group + ' .nestable-item-' + dragItem.id);
+      var el = document.querySelector(".nestable-" + group + " .nestable-item-" + dragItem.id);
 
       var listStyles = {};
       if (el) {
@@ -623,21 +627,17 @@ var Nestable = function (_Component) {
       var options = this.getItemOptions();
 
       return _react2.default.createElement(
-        'div',
-        { className: 'nestable-drag-layer' },
+        "div",
+        { className: "nestable-drag-layer" },
         _react2.default.createElement(
-          'ol',
-          { className: 'nestable-list', style: listStyles },
-          _react2.default.createElement(_NestableItem2.default, {
-            item: dragItem,
-            options: options,
-            isCopy: true
-          })
+          "ol",
+          { className: "nestable-list", style: listStyles },
+          _react2.default.createElement(_NestableItem2.default, { item: dragItem, options: options, isCopy: true })
         )
       );
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _props8 = this.props,
           group = _props8.group,
@@ -649,18 +649,17 @@ var Nestable = function (_Component) {
       var options = this.getItemOptions();
 
       return _react2.default.createElement(
-        'div',
-        { className: (0, _classnames2.default)(className, 'nestable', 'nestable-' + group, { 'is-drag-active': dragItem }) },
+        "div",
+        {
+          className: (0, _classnames2.default)(className, "nestable", "nestable-" + group, {
+            "is-drag-active": dragItem
+          })
+        },
         _react2.default.createElement(
-          'ol',
-          { className: 'nestable-list nestable-group' },
+          "ol",
+          { className: "nestable-list nestable-group" },
           items.map(function (item, i) {
-            return _react2.default.createElement(_NestableItem2.default, {
-              key: i,
-              index: i,
-              item: item,
-              options: options
-            });
+            return _react2.default.createElement(_NestableItem2.default, { key: i, index: i, item: item, options: options });
           })
         ),
         dragItem && this.renderDragLayer()
@@ -693,7 +692,7 @@ Nestable.defaultProps = {
   maxDepth: 10,
   collapsed: false,
   group: Math.random().toString(36).slice(2),
-  childrenProp: 'children',
+  childrenProp: "children",
   renderItem: function renderItem(_ref2) {
     var item = _ref2.item;
     return item.toString();

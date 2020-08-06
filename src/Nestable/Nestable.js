@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import shallowCompare from 'react-addons-shallow-compare';
-import update from 'react-addons-update';
-import cn from 'classnames';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import shallowCompare from "react-addons-shallow-compare";
+import update from "react-addons-update";
+import cn from "classnames";
+import get from "lodash/get";
 
 import {
   isArray,
@@ -12,10 +13,10 @@ import {
   getTransformProps,
   listWithChildren,
   getAllNonEmptyNodesIds,
-} from '../utils';
+} from "../utils";
 
-import './Nestable.css';
-import NestableItem from './NestableItem';
+import "./Nestable.css";
+import NestableItem from "./NestableItem";
 
 class Nestable extends Component {
   constructor(props) {
@@ -46,10 +47,7 @@ class Nestable extends Component {
     threshold: PropTypes.number,
     maxDepth: PropTypes.number,
     collapsed: PropTypes.bool,
-    group: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
+    group: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     childrenProp: PropTypes.string,
     renderItem: PropTypes.func,
     renderCollapseIcon: PropTypes.func,
@@ -63,7 +61,7 @@ class Nestable extends Component {
     maxDepth: 10,
     collapsed: false,
     group: Math.random().toString(36).slice(2),
-    childrenProp: 'children',
+    childrenProp: "children",
     renderItem: ({ item }) => item.toString(),
     onChange: () => {},
     confirmChange: () => true,
@@ -78,9 +76,13 @@ class Nestable extends Component {
     this.setState({ items });
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const { items: itemsNew, childrenProp } = this.props;
-    const isPropsUpdated = shallowCompare({ props: prevProps, state: {} }, this.props, {});
+    const isPropsUpdated = shallowCompare(
+      { props: prevProps, state: {} },
+      this.props,
+      {}
+    );
 
     if (isPropsUpdated) {
       this.stopTrackMouse();
@@ -95,7 +97,7 @@ class Nestable extends Component {
         items: listWithChildren(itemsNew, childrenProp),
         dragItem: null,
         isDirty: false,
-        ...extra
+        ...extra,
       });
     }
   }
@@ -111,24 +113,23 @@ class Nestable extends Component {
     const { childrenProp, collapsed } = this.props;
     const { items } = this.state;
 
-    if (itemIds === 'NONE') {
+    if (itemIds === "NONE") {
       this.setState({
         collapsedGroups: collapsed
           ? getAllNonEmptyNodesIds(items, childrenProp)
-          : []
+          : [],
       });
-
-    } else if (itemIds === 'ALL') {
+    } else if (itemIds === "ALL") {
       this.setState({
         collapsedGroups: collapsed
           ? []
-          : getAllNonEmptyNodesIds(items, childrenProp)
+          : getAllNonEmptyNodesIds(items, childrenProp),
       });
-
     } else if (isArray(itemIds)) {
       this.setState({
-        collapsedGroups: getAllNonEmptyNodesIds(items, childrenProp)
-          .filter(id => (itemIds.indexOf(id) > -1) ^ collapsed)
+        collapsedGroups: getAllNonEmptyNodesIds(items, childrenProp).filter(
+          (id) => (itemIds.indexOf(id) > -1) ^ collapsed
+        ),
       });
     }
   };
@@ -137,15 +138,15 @@ class Nestable extends Component {
   // Methods
   // ––––––––––––––––––––––––––––––––––––
   startTrackMouse = () => {
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onDragEnd);
-    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener("mousemove", this.onMouseMove);
+    document.addEventListener("mouseup", this.onDragEnd);
+    document.addEventListener("keydown", this.onKeyDown);
   };
 
   stopTrackMouse = () => {
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('mouseup', this.onDragEnd);
-    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener("mouseup", this.onDragEnd);
+    document.removeEventListener("keydown", this.onKeyDown);
     this.elCopyStyles = null;
   };
 
@@ -161,9 +162,8 @@ class Nestable extends Component {
     if (realPathTo.length === 0) return;
 
     // user can validate every movement
-    const destinationPath = realPathTo.length > pathTo.length
-      ? pathTo
-      : pathTo.slice(0, -1);
+    const destinationPath =
+      realPathTo.length > pathTo.length ? pathTo : pathTo.slice(0, -1);
     const destinationParent = this.getItemByPath(destinationPath);
     if (!confirmChange(dragItem, destinationParent)) return;
 
@@ -184,7 +184,7 @@ class Nestable extends Component {
     this.setState({
       items,
       isDirty: true,
-      ...extraProps
+      ...extraProps,
     });
   }
 
@@ -196,20 +196,25 @@ class Nestable extends Component {
 
     // has previous sibling and isn't at max depth
     if (itemIndex > 0 && newDepth <= maxDepth) {
-      const prevSibling = this.getItemByPath(pathFrom.slice(0, -1).concat(itemIndex - 1));
+      const prevSibling = this.getItemByPath(
+        pathFrom.slice(0, -1).concat(itemIndex - 1)
+      );
 
       // previous sibling is not collapsed
-      if (!prevSibling[childrenProp].length || !this.isCollapsed(prevSibling)) {
+      if (
+        !get(prevSibling, childrenProp).length ||
+        !this.isCollapsed(prevSibling)
+      ) {
         const pathTo = pathFrom
           .slice(0, -1)
           .concat(itemIndex - 1)
-          .concat(prevSibling[childrenProp].length);
+          .concat(get(prevSibling, childrenProp).length);
 
         // if collapsed by default
         // and was no children here
         // open this node
         let collapseProps = {};
-        if (collapsed && !prevSibling[childrenProp].length) {
+        if (collapsed && !get(prevSibling, childrenProp).length) {
           collapseProps = this.onToggleCollapse(prevSibling, true);
         }
 
@@ -228,7 +233,7 @@ class Nestable extends Component {
       const parent = this.getItemByPath(pathFrom.slice(0, -1));
 
       // is last (by order) item in array
-      if (itemIndex + 1 === parent[childrenProp].length) {
+      if (itemIndex + 1 === get(parent, childrenProp).length) {
         let pathTo = pathFrom.slice(0, -1);
         pathTo[pathTo.length - 1] += 1;
 
@@ -236,7 +241,7 @@ class Nestable extends Component {
         // and is last (by count) item in array
         // remove this node from list of open nodes
         let collapseProps = {};
-        if (collapsed && parent[childrenProp].length === 1) {
+        if (collapsed && get(parent, childrenProp).length === 1) {
           collapseProps = this.onToggleCollapse(parent, true);
         }
 
@@ -279,8 +284,8 @@ class Nestable extends Component {
     items.every((item, i) => {
       if (item.id === id) {
         path.push(i);
-      } else if (item[childrenProp]) {
-        const childrenPath = this.getPathById(id, item[childrenProp]);
+      } else if (get(item, childrenProp)) {
+        const childrenPath = this.getPathById(id, get(item, childrenProp));
 
         if (childrenPath.length) {
           path = path.concat(i).concat(childrenPath);
@@ -297,8 +302,8 @@ class Nestable extends Component {
     const { childrenProp } = this.props;
     let item = null;
 
-    path.forEach(index => {
-      const list = item ? item[childrenProp] : items;
+    path.forEach((index) => {
+      const list = item ? get(item, childrenProp) : items;
       item = list[index];
     });
 
@@ -309,8 +314,8 @@ class Nestable extends Component {
     const { childrenProp } = this.props;
     let level = 1;
 
-    if (item[childrenProp].length > 0) {
-      const childrenDepths = item[childrenProp].map(this.getItemDepth);
+    if (get(item, childrenProp).length > 0) {
+      const childrenDepths = get(item, childrenProp).map(this.getItemDepth);
       level += Math.max(...childrenDepths);
     }
 
@@ -349,17 +354,19 @@ class Nestable extends Component {
 
       // if new depth exceeds max, try to put after item instead of into item
       if (newDepth > maxDepth && nextPath.length) {
-        return this.getRealNextPath(prevPath, nextPath.slice(0, -1), dragItemSize);
+        return this.getRealNextPath(
+          prevPath,
+          nextPath.slice(0, -1),
+          dragItemSize
+        );
       }
 
       return nextPath.map((nextIndex, i) => {
         if (wasShifted) {
-          return i === npLastIndex
-            ? nextIndex + 1
-            : nextIndex;
+          return i === npLastIndex ? nextIndex + 1 : nextIndex;
         }
 
-        if (typeof prevPath[i] !== 'number') {
+        if (typeof prevPath[i] !== "number") {
           return nextIndex;
         }
 
@@ -370,17 +377,16 @@ class Nestable extends Component {
 
         return nextIndex;
       });
-
     } else if (prevPath.length === nextPath.length) {
       // if move bottom + move to item with children --> make it a first child instead of swap
       if (nextPath[npLastIndex] > prevPath[npLastIndex]) {
         const target = this.getItemByPath(nextPath);
 
         if (
-            newDepth < maxDepth &&
-            target[childrenProp] &&
-            target[childrenProp].length &&
-            !this.isCollapsed(target)
+          newDepth < maxDepth &&
+          get(target, childrenProp) &&
+          get(target, childrenProp).length &&
+          !this.isCollapsed(target)
         ) {
           return nextPath
             .slice(0, -1)
@@ -394,7 +400,12 @@ class Nestable extends Component {
   }
 
   getItemOptions() {
-    const { renderItem, renderCollapseIcon, handler, childrenProp } = this.props;
+    const {
+      renderItem,
+      renderCollapseIcon,
+      handler,
+      childrenProp,
+    } = this.props;
     const { dragItem } = this.state;
 
     return {
@@ -407,7 +418,7 @@ class Nestable extends Component {
       onDragStart: this.onDragStart,
       onMouseEnter: this.onMouseEnter,
       isCollapsed: this.isCollapsed,
-      onToggleCollapse: this.onToggleCollapse
+      onToggleCollapse: this.onToggleCollapse,
     };
   }
 
@@ -427,14 +438,14 @@ class Nestable extends Component {
       e.stopPropagation();
     }
 
-    this.el = closest(e.target, '.nestable-item');
+    this.el = closest(e.target, ".nestable-item");
 
     this.startTrackMouse();
     this.onMouseMove(e);
 
     this.setState({
       dragItem: item,
-      itemsOld: this.state.items
+      itemsOld: this.state.items,
     });
   };
 
@@ -444,9 +455,7 @@ class Nestable extends Component {
     this.stopTrackMouse();
     this.el = null;
 
-    isCancel
-      ? this.dragRevert()
-      : this.dragApply();
+    isCancel ? this.dragRevert() : this.dragApply();
   };
 
   onMouseMove = (e) => {
@@ -454,7 +463,9 @@ class Nestable extends Component {
     const { dragItem } = this.state;
     const { clientX, clientY } = e;
     const transformProps = getTransformProps(clientX, clientY);
-    const elCopy = document.querySelector('.nestable-' + group + ' .nestable-drag-layer > .nestable-list');
+    const elCopy = document.querySelector(
+      ".nestable-" + group + " .nestable-drag-layer > .nestable-list"
+    );
 
     if (!this.elCopyStyles) {
       const offset = getOffsetRect(this.el);
@@ -463,13 +474,12 @@ class Nestable extends Component {
       this.elCopyStyles = {
         marginTop: offset.top - clientY - scroll.top,
         marginLeft: offset.left - clientX - scroll.left,
-        ...transformProps
+        ...transformProps,
       };
-
     } else {
       this.elCopyStyles = {
         ...this.elCopyStyles,
-        ...transformProps
+        ...transformProps,
       };
       for (let key in transformProps) {
         if (transformProps.hasOwnProperty(key)) {
@@ -519,7 +529,7 @@ class Nestable extends Component {
     let collapseProps = {};
     if (collapsed && pathFrom.length > 1) {
       const parent = this.getItemByPath(pathFrom.slice(0, -1));
-      if (parent[childrenProp].length === 1) {
+      if (get(parent, childrenProp).length === 1) {
         collapseProps = this.onToggleCollapse(parent, true);
       }
     }
@@ -533,9 +543,10 @@ class Nestable extends Component {
     const isCollapsed = this.isCollapsed(item);
 
     const newState = {
-      collapsedGroups: (isCollapsed ^ collapsed)
-        ? collapsedGroups.filter(id => id !== item.id)
-        : collapsedGroups.concat(item.id)
+      collapsedGroups:
+        isCollapsed ^ collapsed
+          ? collapsedGroups.filter((id) => id !== item.id)
+          : collapsedGroups.concat(item.id),
     };
 
     if (isGetter) {
@@ -558,7 +569,9 @@ class Nestable extends Component {
   renderDragLayer() {
     const { group } = this.props;
     const { dragItem } = this.state;
-    const el = document.querySelector('.nestable-' + group + ' .nestable-item-' + dragItem.id);
+    const el = document.querySelector(
+      ".nestable-" + group + " .nestable-item-" + dragItem.id
+    );
 
     let listStyles = {};
     if (el) {
@@ -567,7 +580,7 @@ class Nestable extends Component {
     if (this.elCopyStyles) {
       listStyles = {
         ...listStyles,
-        ...this.elCopyStyles
+        ...this.elCopyStyles,
       };
     }
 
@@ -576,11 +589,7 @@ class Nestable extends Component {
     return (
       <div className="nestable-drag-layer">
         <ol className="nestable-list" style={listStyles}>
-          <NestableItem
-            item={dragItem}
-            options={options}
-            isCopy
-          />
+          <NestableItem item={dragItem} options={options} isCopy />
         </ol>
       </div>
     );
@@ -592,16 +601,15 @@ class Nestable extends Component {
     const options = this.getItemOptions();
 
     return (
-      <div className={cn(className, 'nestable', 'nestable-' + group, { 'is-drag-active': dragItem })}>
+      <div
+        className={cn(className, "nestable", "nestable-" + group, {
+          "is-drag-active": dragItem,
+        })}
+      >
         <ol className="nestable-list nestable-group">
           {items.map((item, i) => {
             return (
-              <NestableItem
-                key={i}
-                index={i}
-                item={item}
-                options={options}
-              />
+              <NestableItem key={i} index={i} item={item} options={options} />
             );
           })}
         </ol>

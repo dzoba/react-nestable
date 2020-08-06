@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -8,19 +8,23 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require('prop-types');
+var _propTypes = require("prop-types");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _classnames = require('classnames');
+var _classnames = require("classnames");
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _Icon = require('../Icon');
+var _get = require("lodash/get");
+
+var _get2 = _interopRequireDefault(_get);
+
+var _Icon = require("../Icon");
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
@@ -51,16 +55,16 @@ var NestableItem = function (_Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = NestableItem.__proto__ || Object.getPrototypeOf(NestableItem)).call.apply(_ref, [this].concat(args))), _this), _this.renderCollapseIcon = function (_ref2) {
       var isCollapsed = _ref2.isCollapsed;
       return _react2.default.createElement(_Icon2.default, {
-        className: (0, _classnames2.default)('nestable-item-icon', {
-          'icon-plus-gray': isCollapsed,
-          'icon-minus-gray': !isCollapsed
+        className: (0, _classnames2.default)("nestable-item-icon", {
+          "icon-plus-gray": isCollapsed,
+          "icon-minus-gray": !isCollapsed
         })
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(NestableItem, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       var _cn;
 
@@ -79,7 +83,7 @@ var NestableItem = function (_Component) {
 
       var isCollapsed = options.isCollapsed(item);
       var isDragging = !isCopy && dragItem && dragItem.id === item.id;
-      var hasChildren = item[childrenProp] && item[childrenProp].length > 0;
+      var hasChildren = (0, _get2.default)(item, childrenProp) && (0, _get2.default)(item, childrenProp).length > 0;
 
       var rowProps = {};
       var handlerProps = {};
@@ -104,8 +108,8 @@ var NestableItem = function (_Component) {
 
       if (handler) {
         Handler = _react2.default.createElement(
-          'span',
-          _extends({ className: 'nestable-item-handler' }, handlerProps),
+          "span",
+          _extends({ className: "nestable-item-handler" }, handlerProps),
           handler
         );
         //Handler = React.cloneElement(handler, handlerProps);
@@ -114,18 +118,18 @@ var NestableItem = function (_Component) {
       }
 
       var collapseIcon = hasChildren ? _react2.default.createElement(
-        'span',
+        "span",
         { onClick: function onClick() {
             return options.onToggleCollapse(item);
           } },
         renderCollapseIcon({ isCollapsed: isCollapsed })
       ) : null;
 
-      var baseClassName = 'nestable-item' + (isCopy ? '-copy' : '');
+      var baseClassName = "nestable-item" + (isCopy ? "-copy" : "");
       var itemProps = {
-        className: (0, _classnames2.default)(baseClassName, baseClassName + '-' + item.id, (_cn = {
-          'is-dragging': isDragging
-        }, _defineProperty(_cn, baseClassName + '--with-children', hasChildren), _defineProperty(_cn, baseClassName + '--children-open', hasChildren && !isCollapsed), _defineProperty(_cn, baseClassName + '--children-collapsed', hasChildren && isCollapsed), _cn))
+        className: (0, _classnames2.default)(baseClassName, baseClassName + "-" + item.id, (_cn = {
+          "is-dragging": isDragging
+        }, _defineProperty(_cn, baseClassName + "--with-children", hasChildren), _defineProperty(_cn, baseClassName + "--children-open", hasChildren && !isCollapsed), _defineProperty(_cn, baseClassName + "--children-collapsed", hasChildren && isCollapsed), _cn))
       };
 
       var content = renderItem({ item: item, collapseIcon: collapseIcon, handler: Handler, index: index });
@@ -133,16 +137,16 @@ var NestableItem = function (_Component) {
       if (!content) return null;
 
       return _react2.default.createElement(
-        'li',
+        "li",
         itemProps,
         _react2.default.createElement(
-          'div',
-          _extends({ className: 'nestable-item-name' }, rowProps),
+          "div",
+          _extends({ className: "nestable-item-name" }, rowProps),
           content
         ),
         hasChildren && !isCollapsed && _react2.default.createElement(
-          'ol',
-          { className: 'nestable-list' },
+          "ol",
+          { className: "nestable-list" },
           item[childrenProp].map(function (item, i) {
             return _react2.default.createElement(NestableItem, {
               key: i,

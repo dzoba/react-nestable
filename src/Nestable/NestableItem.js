@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import cn from 'classnames';
-
-import Icon from '../Icon';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import cn from "classnames";
+import get from "lodash/get";
+import Icon from "../Icon";
 
 class NestableItem extends Component {
   static propTypes = {
@@ -16,9 +16,9 @@ class NestableItem extends Component {
 
   renderCollapseIcon = ({ isCollapsed }) => (
     <Icon
-      className={cn('nestable-item-icon', {
-        'icon-plus-gray': isCollapsed,
-        'icon-minus-gray': !isCollapsed,
+      className={cn("nestable-item-icon", {
+        "icon-plus-gray": isCollapsed,
+        "icon-minus-gray": !isCollapsed,
       })}
     />
   );
@@ -35,7 +35,8 @@ class NestableItem extends Component {
 
     const isCollapsed = options.isCollapsed(item);
     const isDragging = !isCopy && dragItem && dragItem.id === item.id;
-    const hasChildren = item[childrenProp] && item[childrenProp].length > 0;
+    const hasChildren =
+      get(item, childrenProp) && get(item, childrenProp).length > 0;
 
     let rowProps = {};
     let handlerProps = {};
@@ -57,35 +58,33 @@ class NestableItem extends Component {
     }
 
     if (handler) {
-      Handler = <span className="nestable-item-handler" {...handlerProps}>{handler}</span>;
+      Handler = (
+        <span className="nestable-item-handler" {...handlerProps}>
+          {handler}
+        </span>
+      );
       //Handler = React.cloneElement(handler, handlerProps);
     } else {
       rowProps = {
         ...rowProps,
-        ...handlerProps
+        ...handlerProps,
       };
     }
 
-    const collapseIcon = hasChildren
-      ? (
-        <span onClick={() => options.onToggleCollapse(item)}>
-          {renderCollapseIcon({ isCollapsed })}
-        </span>
-      )
-      : null;
+    const collapseIcon = hasChildren ? (
+      <span onClick={() => options.onToggleCollapse(item)}>
+        {renderCollapseIcon({ isCollapsed })}
+      </span>
+    ) : null;
 
-    const baseClassName = 'nestable-item' + (isCopy ? '-copy' : '');
+    const baseClassName = "nestable-item" + (isCopy ? "-copy" : "");
     const itemProps = {
-      className: cn(
-          baseClassName,
-          baseClassName + '-' + item.id,
-          {
-            'is-dragging': isDragging,
-            [baseClassName + '--with-children']: hasChildren,
-            [baseClassName + '--children-open']: hasChildren && !isCollapsed,
-            [baseClassName + '--children-collapsed']: hasChildren && isCollapsed,
-          }
-      )
+      className: cn(baseClassName, baseClassName + "-" + item.id, {
+        "is-dragging": isDragging,
+        [baseClassName + "--with-children"]: hasChildren,
+        [baseClassName + "--children-open"]: hasChildren && !isCollapsed,
+        [baseClassName + "--children-collapsed"]: hasChildren && isCollapsed,
+      }),
     };
 
     const content = renderItem({ item, collapseIcon, handler: Handler, index });

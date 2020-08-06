@@ -1,3 +1,5 @@
+import get from "lodash/get";
+
 export const objectType = (obj) => {
   return Object.prototype.toString.call(obj).slice(8, -1);
 };
@@ -65,17 +67,17 @@ export const getTotalScroll = (elem) => {
 
 export const getTransformProps = (x, y) => {
   return {
-    transform: 'translate(' + x + 'px, ' + y + 'px)'
+    transform: "translate(" + x + "px, " + y + "px)",
   };
 };
 
 export const listWithChildren = (list, childrenProp) => {
-  return list.map(item => {
+  return list.map((item) => {
     return {
       ...item,
-      [childrenProp]: item[childrenProp]
-        ? listWithChildren(item[childrenProp], childrenProp)
-        : []
+      [childrenProp]: get(item, childrenProp)
+        ? listWithChildren(get(item, childrenProp), childrenProp)
+        : [],
     };
   });
 };
@@ -83,9 +85,11 @@ export const listWithChildren = (list, childrenProp) => {
 export const getAllNonEmptyNodesIds = (items, childrenProp) => {
   let childrenIds = [];
   let ids = items
-    .filter(item => item[childrenProp].length)
-    .map(item => {
-      childrenIds = childrenIds.concat(getAllNonEmptyNodesIds(item[childrenProp], childrenProp));
+    .filter((item) => get(item, childrenProp).length)
+    .map((item) => {
+      childrenIds = childrenIds.concat(
+        getAllNonEmptyNodesIds(get(item, childrenProp), childrenProp)
+      );
       return item.id;
     });
 

@@ -3,8 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getAllNonEmptyNodesIds = exports.listWithChildren = exports.getTransformProps = exports.getTotalScroll = exports.getOffsetRect = exports.closest = exports.isArray = exports.isString = exports.isNumber = exports.isFunction = exports.isUndefined = exports.isDefined = exports.objectType = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _get = require("lodash/get");
+
+var _get2 = _interopRequireDefault(_get);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -75,22 +82,22 @@ var getTotalScroll = exports.getTotalScroll = function getTotalScroll(elem) {
 
 var getTransformProps = exports.getTransformProps = function getTransformProps(x, y) {
   return {
-    transform: 'translate(' + x + 'px, ' + y + 'px)'
+    transform: "translate(" + x + "px, " + y + "px)"
   };
 };
 
 var listWithChildren = exports.listWithChildren = function listWithChildren(list, childrenProp) {
   return list.map(function (item) {
-    return _extends({}, item, _defineProperty({}, childrenProp, item[childrenProp] ? listWithChildren(item[childrenProp], childrenProp) : []));
+    return _extends({}, item, _defineProperty({}, childrenProp, (0, _get2.default)(item, childrenProp) ? listWithChildren((0, _get2.default)(item, childrenProp), childrenProp) : []));
   });
 };
 
 var getAllNonEmptyNodesIds = exports.getAllNonEmptyNodesIds = function getAllNonEmptyNodesIds(items, childrenProp) {
   var childrenIds = [];
   var ids = items.filter(function (item) {
-    return item[childrenProp].length;
+    return (0, _get2.default)(item, childrenProp).length;
   }).map(function (item) {
-    childrenIds = childrenIds.concat(getAllNonEmptyNodesIds(item[childrenProp], childrenProp));
+    childrenIds = childrenIds.concat(getAllNonEmptyNodesIds((0, _get2.default)(item, childrenProp), childrenProp));
     return item.id;
   });
 
