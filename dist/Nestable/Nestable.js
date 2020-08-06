@@ -115,7 +115,7 @@ var Nestable = function (_Component) {
       var collapsedGroups = _this.state.collapsedGroups;
 
 
-      return !!(collapsedGroups.indexOf(item.id) > -1 ^ collapsed);
+      return !!(collapsedGroups.indexOf(item._id) > -1 ^ collapsed);
     };
 
     _this.onDragStart = function (e, item) {
@@ -202,10 +202,10 @@ var Nestable = function (_Component) {
           childrenProp = _this$props3.childrenProp;
       var dragItem = _this.state.dragItem;
 
-      if (dragItem.id === item.id) return;
+      if (dragItem._id === item._id) return;
 
-      var pathFrom = _this.getPathById(dragItem.id);
-      var pathTo = _this.getPathById(item.id);
+      var pathFrom = _this.getPathById(dragItem._id);
+      var pathTo = _this.getPathById(item._id);
 
       // if collapsed by default
       // and move last (by count) child
@@ -229,8 +229,8 @@ var Nestable = function (_Component) {
 
       var newState = {
         collapsedGroups: isCollapsed ^ collapsed ? collapsedGroups.filter(function (id) {
-          return id !== item.id;
-        }) : collapsedGroups.concat(item.id)
+          return id !== item._id;
+        }) : collapsedGroups.concat(item._id)
       };
 
       if (isGetter) {
@@ -370,7 +370,7 @@ var Nestable = function (_Component) {
           childrenProp = _props4.childrenProp,
           collapsed = _props4.collapsed;
 
-      var pathFrom = this.getPathById(dragItem.id);
+      var pathFrom = this.getPathById(dragItem._id);
       var itemIndex = pathFrom[pathFrom.length - 1];
       var newDepth = pathFrom.length + this.getItemDepth(dragItem);
 
@@ -401,7 +401,7 @@ var Nestable = function (_Component) {
           childrenProp = _props5.childrenProp,
           collapsed = _props5.collapsed;
 
-      var pathFrom = this.getPathById(dragItem.id);
+      var pathFrom = this.getPathById(dragItem._id);
       var itemIndex = pathFrom[pathFrom.length - 1];
 
       // has parent
@@ -472,7 +472,7 @@ var Nestable = function (_Component) {
       var path = [];
 
       items.every(function (item, i) {
-        if (item.id === id) {
+        if (item._id === id) {
           path.push(i);
         } else if ((0, _get2.default)(item, childrenProp)) {
           var childrenPath = _this2.getPathById(id, (0, _get2.default)(item, childrenProp));
@@ -614,7 +614,7 @@ var Nestable = function (_Component) {
       var group = this.props.group;
       var dragItem = this.state.dragItem;
 
-      var el = document.querySelector(".nestable-" + group + " .nestable-item-" + dragItem.id);
+      var el = document.querySelector(".nestable-" + group + " .nestable-item-" + dragItem._id);
 
       var listStyles = {};
       if (el) {
@@ -673,7 +673,7 @@ var Nestable = function (_Component) {
 Nestable.propTypes = {
   className: _propTypes2.default.string,
   items: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    id: _propTypes2.default.any.isRequired
+    _id: _propTypes2.default.any.isRequired
   })),
   threshold: _propTypes2.default.number,
   maxDepth: _propTypes2.default.number,

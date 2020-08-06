@@ -22,28 +22,28 @@ const handlerStyles = {
 
 const items = [
   {
-    id: 0,
+    _id: 0,
     text: "Andy",
   },
   {
-    id: 1,
+    _id: 1,
     text: "Harry",
     foo: {
       bar: [
         {
-          id: 2,
+          _id: 2,
           text: "David",
         },
       ],
     },
   },
   {
-    id: 3,
+    _id: 3,
     text: "Lisa",
     foo: {
       bar: [
         {
-          id: 4,
+          _id: 4,
           text: "Richard",
         },
       ],
@@ -53,18 +53,18 @@ const items = [
 
 const grocery = [
   {
-    id: 0,
+    _id: 0,
     text: "Apples",
     type: "fruits",
   },
   {
-    id: 1,
+    _id: 1,
     text: "Fruit box",
     accepts: ["fruits"],
     foo: {
       bar: [
         {
-          id: 2,
+          _id: 2,
           text: "Bananas",
           type: "fruits",
         },
@@ -72,13 +72,13 @@ const grocery = [
     },
   },
   {
-    id: 3,
+    _id: 3,
     text: "Box",
     accepts: ["fruits", "sweets"],
     foo: {
       bar: [
         {
-          id: 4,
+          _id: 4,
           text: "Candy",
           type: "sweets",
         },

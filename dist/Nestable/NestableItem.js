@@ -82,7 +82,7 @@ var NestableItem = function (_Component) {
 
 
       var isCollapsed = options.isCollapsed(item);
-      var isDragging = !isCopy && dragItem && dragItem.id === item.id;
+      var isDragging = !isCopy && dragItem && dragItem._id === item._id;
       var hasChildren = (0, _get2.default)(item, childrenProp) && (0, _get2.default)(item, childrenProp).length > 0;
 
       var rowProps = {};
@@ -127,7 +127,7 @@ var NestableItem = function (_Component) {
 
       var baseClassName = "nestable-item" + (isCopy ? "-copy" : "");
       var itemProps = {
-        className: (0, _classnames2.default)(baseClassName, baseClassName + "-" + item.id, (_cn = {
+        className: (0, _classnames2.default)(baseClassName, baseClassName + "-" + item._id, (_cn = {
           "is-dragging": isDragging
         }, _defineProperty(_cn, baseClassName + "--with-children", hasChildren), _defineProperty(_cn, baseClassName + "--children-open", hasChildren && !isCollapsed), _defineProperty(_cn, baseClassName + "--children-collapsed", hasChildren && isCollapsed), _cn))
       };
@@ -166,7 +166,7 @@ var NestableItem = function (_Component) {
 
 NestableItem.propTypes = {
   item: _propTypes2.default.shape({
-    id: _propTypes2.default.any.isRequired
+    _id: _propTypes2.default.any.isRequired
   }),
   isCopy: _propTypes2.default.bool,
   options: _propTypes2.default.object,
