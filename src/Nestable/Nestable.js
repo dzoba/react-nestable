@@ -4,6 +4,7 @@ import shallowCompare from "react-addons-shallow-compare";
 import update from "react-addons-update";
 import cn from "classnames";
 import get from "lodash/get";
+import set from "lodash/set";
 
 import {
   isArray,
@@ -334,7 +335,7 @@ class Nestable extends Component {
         currentPath.$splice = [[index, numToRemove, ...itemsToInsert]];
       } else {
         const nextPath = {};
-        currentPath[index] = { [options.childrenProp]: nextPath };
+        currentPath[index] = set({}, options.childrenProp, nextPath);
         currentPath = nextPath;
       }
     });

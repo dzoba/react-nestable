@@ -147,7 +147,7 @@ var NestableItem = function (_Component) {
         hasChildren && !isCollapsed && _react2.default.createElement(
           "ol",
           { className: "nestable-list" },
-          item[childrenProp].map(function (item, i) {
+          (0, _get2.default)(item, childrenProp).map(function (item, i) {
             return _react2.default.createElement(NestableItem, {
               key: i,
               index: i,

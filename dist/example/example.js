@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1e89c2249a9119acac09"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "f95dad2848a9a75954b8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -12364,7 +12364,7 @@
 	        hasChildren && !isCollapsed && _react2.default.createElement(
 	          "ol",
 	          { className: "nestable-list" },
-	          item[childrenProp].map(function (item, i) {
+	          (0, _get2.default)(item, childrenProp).map(function (item, i) {
 	            return _react2.default.createElement(NestableItem, {
 	              key: i,
 	              index: i,
