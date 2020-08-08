@@ -99,7 +99,7 @@ class NestableItem extends Component {
 
         {hasChildren && !isCollapsed && (
           <ol className="nestable-list">
-            {item[childrenProp].map((item, i) => {
+            {get(item, childrenProp).map((item, i) => {
               return (
                 <NestableItem
                   key={i}

@@ -28,8 +28,8 @@ const items = [
   {
     _id: 1,
     text: "Harry",
-    foo: {
-      bar: [
+    view: {
+      steps: [
         {
           _id: 2,
           text: "David",
@@ -40,8 +40,8 @@ const items = [
   {
     _id: 3,
     text: "Lisa",
-    foo: {
-      bar: [
+    view: {
+      steps: [
         {
           _id: 4,
           text: "Richard",
@@ -61,8 +61,8 @@ const grocery = [
     _id: 1,
     text: "Fruit box",
     accepts: ["fruits"],
-    foo: {
-      bar: [
+    view: {
+      steps: [
         {
           _id: 2,
           text: "Bananas",
@@ -75,8 +75,8 @@ const grocery = [
     _id: 3,
     text: "Box",
     accepts: ["fruits", "sweets"],
-    foo: {
-      bar: [
+    view: {
+      steps: [
         {
           _id: 4,
           text: "Candy",
@@ -141,7 +141,7 @@ class Example extends Component {
           collapsed={defaultCollapsed}
           renderItem={this.renderItem}
           ref={(el) => (this.refNestable = el)}
-          childrenProp={"foo.bar"}
+          childrenProp={"view.steps"}
         />
 
         <br />

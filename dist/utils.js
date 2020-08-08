@@ -11,9 +11,11 @@ var _get = require("lodash/get");
 
 var _get2 = _interopRequireDefault(_get);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _set = require("lodash/set");
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var _set2 = _interopRequireDefault(_set);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var objectType = exports.objectType = function objectType(obj) {
   return Object.prototype.toString.call(obj).slice(8, -1);
@@ -88,7 +90,8 @@ var getTransformProps = exports.getTransformProps = function getTransformProps(x
 
 var listWithChildren = exports.listWithChildren = function listWithChildren(list, childrenProp) {
   return list.map(function (item) {
-    return _extends({}, item, _defineProperty({}, childrenProp, (0, _get2.default)(item, childrenProp) ? listWithChildren((0, _get2.default)(item, childrenProp), childrenProp) : []));
+    var childObj = (0, _set2.default)({}, childrenProp, (0, _get2.default)(item, childrenProp) ? listWithChildren((0, _get2.default)(item, childrenProp), childrenProp) : []);
+    return _extends({}, item, childObj);
   });
 };
 

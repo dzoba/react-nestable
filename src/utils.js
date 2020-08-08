@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import set from "lodash/set";
 
 export const objectType = (obj) => {
   return Object.prototype.toString.call(obj).slice(8, -1);
@@ -73,11 +74,16 @@ export const getTransformProps = (x, y) => {
 
 export const listWithChildren = (list, childrenProp) => {
   return list.map((item) => {
+    const childObj = set(
+      {},
+      childrenProp,
+      get(item, childrenProp)
+        ? listWithChildren(get(item, childrenProp), childrenProp)
+        : []
+    );
     return {
       ...item,
-      [childrenProp]: get(item, childrenProp)
-        ? listWithChildren(get(item, childrenProp), childrenProp)
-        : [],
+      ...childObj,
     };
   });
 };
