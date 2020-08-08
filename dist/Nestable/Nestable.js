@@ -32,6 +32,10 @@ var _get = require("lodash/get");
 
 var _get2 = _interopRequireDefault(_get);
 
+var _set = require("lodash/set");
+
+var _set2 = _interopRequireDefault(_set);
+
 var _utils = require("../utils");
 
 require("./Nestable.css");
@@ -41,8 +45,6 @@ var _NestableItem = require("./NestableItem");
 var _NestableItem2 = _interopRequireDefault(_NestableItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -518,7 +520,7 @@ var Nestable = function (_Component) {
           currentPath.$splice = [[index, numToRemove].concat(_toConsumableArray(itemsToInsert))];
         } else {
           var nextPath = {};
-          currentPath[index] = _defineProperty({}, options.childrenProp, nextPath);
+          currentPath[index] = (0, _set2.default)({}, options.childrenProp, nextPath);
           currentPath = nextPath;
         }
       });
