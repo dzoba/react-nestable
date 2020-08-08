@@ -361,7 +361,8 @@ var Nestable = function (_Component) {
 
       this.setState(_extends({
         items: items,
-        isDirty: true
+        isDirty: true,
+        destinationParent: destinationParent
       }, extraProps));
     }
   }, {
@@ -435,10 +436,11 @@ var Nestable = function (_Component) {
           items = _state.items,
           isDirty = _state.isDirty,
           dragItem = _state.dragItem,
-          itemsOld = _state.itemsOld;
+          itemsOld = _state.itemsOld,
+          destinationParent = _state.destinationParent;
 
 
-      onChange && isDirty && onChange(items, dragItem, itemsOld);
+      onChange && isDirty && onChange(items, dragItem, itemsOld, destinationParent);
 
       this.setState({
         itemsOld: null,
