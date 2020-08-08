@@ -253,15 +253,15 @@ class Nestable extends Component {
 
   dragApply() {
     const { onChange } = this.props;
-    const { items, isDirty, dragItem } = this.state;
+    const { items, isDirty, dragItem, itemsOld } = this.state;
+
+    onChange && isDirty && onChange(items, dragItem, itemsOld);
 
     this.setState({
       itemsOld: null,
       dragItem: null,
       isDirty: false,
     });
-
-    onChange && isDirty && onChange(items, dragItem);
   }
 
   dragRevert() {

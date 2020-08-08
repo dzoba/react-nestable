@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "af8a6e07925d889e93e6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cf6c80ccd1bbd4076ddf"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -11982,16 +11982,17 @@
 	      var _state = this.state,
 	          items = _state.items,
 	          isDirty = _state.isDirty,
-	          dragItem = _state.dragItem;
+	          dragItem = _state.dragItem,
+	          itemsOld = _state.itemsOld;
 	
+	
+	      onChange && isDirty && onChange(items, dragItem, itemsOld);
 	
 	      this.setState({
 	        itemsOld: null,
 	        dragItem: null,
 	        isDirty: false
 	      });
-	
-	      onChange && isDirty && onChange(items, dragItem);
 	    }
 	  }, {
 	    key: "dragRevert",

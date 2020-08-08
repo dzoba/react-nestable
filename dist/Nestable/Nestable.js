@@ -434,16 +434,17 @@ var Nestable = function (_Component) {
       var _state = this.state,
           items = _state.items,
           isDirty = _state.isDirty,
-          dragItem = _state.dragItem;
+          dragItem = _state.dragItem,
+          itemsOld = _state.itemsOld;
 
+
+      onChange && isDirty && onChange(items, dragItem, itemsOld);
 
       this.setState({
         itemsOld: null,
         dragItem: null,
         isDirty: false
       });
-
-      onChange && isDirty && onChange(items, dragItem);
     }
   }, {
     key: "dragRevert",
