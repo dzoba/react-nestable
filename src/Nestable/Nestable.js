@@ -186,6 +186,7 @@ class Nestable extends Component {
       items,
       isDirty: true,
       destinationParent,
+      destinationPath,
       ...extraProps,
     });
   }
@@ -254,17 +255,11 @@ class Nestable extends Component {
 
   dragApply() {
     const { onChange } = this.props;
-    const {
-      items,
-      isDirty,
-      dragItem,
-      itemsOld,
-      destinationParent,
-    } = this.state;
+    const { items, isDirty, dragItem, itemsOld, destinationPath } = this.state;
 
     onChange &&
       isDirty &&
-      onChange(items, dragItem, itemsOld, destinationParent);
+      onChange(items, dragItem, itemsOld, this.getItemByPath(destinationPath));
 
     this.setState({
       itemsOld: null,

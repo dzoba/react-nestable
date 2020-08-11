@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "25bc477416fba6274347"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8476742e4132a4c855ab"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -11910,7 +11910,8 @@
 	      this.setState(_extends({
 	        items: items,
 	        isDirty: true,
-	        destinationParent: destinationParent
+	        destinationParent: destinationParent,
+	        destinationPath: destinationPath
 	      }, extraProps));
 	    }
 	  }, {
@@ -11985,10 +11986,10 @@
 	          isDirty = _state.isDirty,
 	          dragItem = _state.dragItem,
 	          itemsOld = _state.itemsOld,
-	          destinationParent = _state.destinationParent;
+	          destinationPath = _state.destinationPath;
 	
 	
-	      onChange && isDirty && onChange(items, dragItem, itemsOld, destinationParent);
+	      onChange && isDirty && onChange(items, dragItem, itemsOld, this.getItemByPath(destinationPath));
 	
 	      this.setState({
 	        itemsOld: null,
