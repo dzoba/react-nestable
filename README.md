@@ -1,6 +1,6 @@
 I have modified this from the original project to:
 
-1. Support nested children elements (eg, 'foo.bar.children'
+1. Support nested children elements (eg, 'foo.bar.children')
 2. Use _id as the id element
 
 
